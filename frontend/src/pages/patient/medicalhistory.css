@@ -1,0 +1,218 @@
+/* MedicalHistory page container — no extra padding or centering.
+   PatientApp.css already applies padding: 32px via the page-content wrapper. */
+.mh-container {
+  padding: 0;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.page-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: hsl(var(--foreground));
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: hsl(var(--card));
+  padding: 8px 16px;
+  border-radius: 12px;
+  border: 1px solid hsl(var(--border));
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.user-info img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid hsl(var(--primary) / 0.2);
+}
+
+.user-info p {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: hsl(var(--foreground));
+}
+
+.user-info span {
+  font-size: 12px;
+  color: hsl(var(--muted-foreground));
+}
+
+/* Card */
+.card {
+  background: hsl(var(--card));
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  border: 1px solid hsl(var(--border));
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.card h4 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 16px;
+  color: hsl(var(--foreground));
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card select {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+}
+[dir="rtl"] .card select { background-position: left 12px center; }
+
+.card select:focus {
+  border-color: hsl(var(--primary));
+  ring: 2px hsl(var(--primary) / 0.1);
+}
+
+/* Tags */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.tag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: hsl(var(--primary) / 0.1);
+  color: hsl(var(--primary));
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid hsl(var(--primary) / 0.2);
+}
+
+.tag-remove {
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+.tag-remove:hover { background: hsl(var(--primary) / 0.2); }
+
+/* Surgery Detail Card */
+.inner-card {
+  background: hsl(var(--background));
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid hsl(var(--border));
+}
+
+.surgery-doctor {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.surgery-doctor img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.surgery-doctor h5 { margin: 0; font-size: 15px; font-weight: 700; }
+.surgery-doctor span { font-size: 12px; color: hsl(var(--muted-foreground)); }
+
+.inner-card h5 { margin: 0 0 8px; font-size: 16px; font-weight: 700; color: hsl(var(--foreground)); }
+.inner-card .date { font-size: 13px; color: hsl(var(--muted-foreground)); display: flex; align-items: center; gap: 6px; margin: 0 0 12px; }
+.inner-card .notes-title { font-size: 13px; font-weight: 700; color: hsl(var(--foreground)); margin: 0 0 4px; }
+.inner-card p { margin: 0; font-size: 13px; color: hsl(var(--muted-foreground)); line-height: 1.5; }
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 16px;
+}
+
+.modal {
+  background: hsl(var(--card));
+  padding: 32px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 400px;
+  animation: modalIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.modal h3 { margin: 0 0 12px; font-size: 20px; font-weight: 800; }
+.modal p { margin: 0 0 24px; font-size: 14px; color: hsl(var(--muted-foreground)); }
+
+.modal-actions { display: flex; gap: 12px; justify-content: center; }
+
+.modal-actions .cancel-btn,
+.modal-actions .delete-btn {
+  padding: 10px 24px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.modal-actions .cancel-btn { background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); }
+.modal-actions .cancel-btn:hover { background: hsl(var(--secondary) / 0.8); }
+
+.modal-actions .delete-btn { background: hsl(var(--destructive)); color: hsl(var(--destructive-foreground)); }
+.modal-actions .delete-btn:hover { background: hsl(var(--destructive) / 0.9); }
+
+

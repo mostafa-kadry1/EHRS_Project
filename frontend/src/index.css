@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* Design system — all colors MUST be HSL */
+
+@layer base {
+  :root {
+    --background: 210 25% 97%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    --primary: 211 73% 42%;
+    --primary-foreground: 0 0% 100%;
+
+    --primary-light: 211 73% 95%;
+    --primary-glow: 211 73% 55%;
+
+    --secondary: 210 20% 94%;
+    --secondary-foreground: 222 47% 25%;
+
+    --muted: 210 20% 94%;
+    --muted-foreground: 215 16% 52%;
+
+    --accent: 194 70% 40%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 214 20% 88%;
+    --input: 214 20% 88%;
+    --ring: 211 73% 42%;
+
+    --radius: 0.625rem;
+
+    /* Role colors */
+    --doctor-primary: 211 73% 42%;
+    --doctor-primary-foreground: 0 0% 100%;
+    --patient-primary: 211 73% 42%;
+    --patient-primary-foreground: 0 0% 100%;
+
+    /* Status colors */
+    --status-waiting: 38 92% 50%;
+    --status-waiting-bg: 38 92% 95%;
+    --status-completed: 142 71% 40%;
+    --status-completed-bg: 142 71% 94%;
+    --status-cancelled: 0 84% 60%;
+    --status-cancelled-bg: 0 84% 95%;
+
+    /* Sidebar */
+    --sidebar-background: 211 65% 30%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 211 65% 24%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 211 65% 26%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 211 65% 25%;
+    --sidebar-ring: 211 65% 45%;
+    --sidebar-muted: 211 30% 70%;
+  }
+
+  .dark {
+    --background: 222 44% 7%;
+    --foreground: 210 40% 96%;
+    --card: 222 44% 10%;
+    --card-foreground: 210 40% 96%;
+    --popover: 222 44% 10%;
+    --popover-foreground: 210 40% 96%;
+    --primary: 211 73% 55%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 222 44% 16%;
+    --secondary-foreground: 210 40% 90%;
+    --muted: 222 44% 16%;
+    --muted-foreground: 215 20% 60%;
+    --accent: 194 70% 45%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 62% 40%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 222 44% 20%;
+    --input: 222 44% 20%;
+    --ring: 211 73% 55%;
+
+    /* Role colors */
+    --doctor-primary: 211 73% 55%;
+    --doctor-primary-foreground: 0 0% 100%;
+    --patient-primary: 211 73% 55%;
+    --patient-primary-foreground: 0 0% 100%;
+    --sidebar-background: 222 44% 8%;
+    --sidebar-foreground: 210 40% 88%;
+    --sidebar-primary: 211 73% 58%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 222 44% 15%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 222 44% 15%;
+    --sidebar-ring: 211 73% 55%;
+    --sidebar-muted: 215 20% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', 'Noto Sans Arabic', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Plus Jakarta Sans', 'Noto Sans Arabic', sans-serif;
+  }
+}
+
+@layer utilities {
+  .status-waiting {
+    color: hsl(var(--status-waiting));
+    background-color: hsl(var(--status-waiting-bg));
+  }
+  .status-completed {
+    color: hsl(var(--status-completed));
+    background-color: hsl(var(--status-completed-bg));
+  }
+  .status-cancelled {
+    color: hsl(var(--status-cancelled));
+    background-color: hsl(var(--status-cancelled-bg));
+  }
+  .sidebar-nav-item {
+    @apply flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200;
+    color: hsl(var(--sidebar-muted));
+  }
+  .sidebar-nav-item:hover {
+    color: hsl(var(--sidebar-foreground));
+    background-color: hsl(var(--sidebar-accent));
+  }
+  .sidebar-nav-item.active {
+    color: hsl(var(--sidebar-primary-foreground));
+    background-color: hsl(var(--sidebar-primary));
+  }
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+}

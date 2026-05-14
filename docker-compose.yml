@@ -1,0 +1,82 @@
+version: '3.9'
+
+services:
+
+  frontend:
+    build:
+      context: ./frontend
+
+    container_name: ehrs-frontend
+
+    ports:
+      - "8080:80"
+
+    depends_on:
+      - backend
+
+    networks:
+      - ehrs-network
+
+
+
+  backend:
+    build:
+      context: ./backend
+
+    container_name: ehrs-backend
+
+    ports:
+      - "5000:8080"
+
+    depends_on:
+      - sql
+
+    environment:
+      - ASPNETCORE_URLS=http://0.0.0.0:8080
+      - ASPNETCORE_ENVIRONMENT=Development
+
+      - ConnectionStrings__DefaultConnection=Server=sql,1433;Database=EHR_Wearable_DB;User Id=sa;Password=YourStrongPass123@;TrustServerCertificate=True;
+
+      - Jwt__Key=EHRS_DEV__9A8F7Gh6Jk5Lm4Np3Qr2St1Uv0WxYz__SuperLongSecretKey__2026
+      - Jwt__Issuer=EHRS
+      - Jwt__Audience=EHRs.Client
+
+      - Encryption__Key=OmutbJepcLmRBa/z4ho84f2tYRuPp+oU6D82AEbkJTA=
+
+    volumes:
+      - uploads:/app/wwwroot/uploads
+
+    networks:
+      - ehrs-network
+
+
+
+  sql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+
+    container_name: ehrs-sql
+
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrongPass123@
+
+    ports:
+      - "1433:1433"
+
+    volumes:
+      - sql_data:/var/opt/mssql
+
+    networks:
+      - ehrs-network
+
+
+
+volumes:
+  sql_data:
+  uploads:
+
+
+
+networks:
+  ehrs-network:
+    driver: bridge

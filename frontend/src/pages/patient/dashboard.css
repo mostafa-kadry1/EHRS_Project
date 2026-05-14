@@ -1,0 +1,129 @@
+/* ── Dashboard ─────────────────────────────────────────────────────── */
+.dashboard-container {
+  padding: 0 0 32px;
+  background: transparent;
+}
+
+/* Section Title */
+.section-title {
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 14px;
+  color: hsl(var(--primary));
+}
+
+/* Vital Signs */
+.vital-section { margin-bottom: 28px; }
+
+.vital-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.vital-card {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: 14px;
+  padding: 16px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  transition: transform 0.15s;
+}
+.vital-card:hover { transform: translateY(-2px); }
+
+.vital-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.vital-top .icon { font-size: 20px; }
+.vital-top p     { margin: 0; font-size: 12px; color: hsl(var(--muted-foreground)); }
+.vital-card h4   { margin: 0; font-size: 17px; font-weight: 800; color: hsl(var(--foreground)); }
+
+/* Upcoming */
+.upcoming-section { margin-bottom: 28px; }
+
+.upcoming-card {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: 14px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.appointment-time { margin: 0; color: hsl(var(--muted-foreground)); font-size: 14px; }
+.doctor-name      { margin: 6px 0 0; font-size: 17px; font-weight: 700; color: hsl(var(--foreground)); }
+
+.primary-btn {
+  padding: 10px 22px;
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 14px;
+  transition: 0.2s;
+  white-space: nowrap;
+}
+.primary-btn:hover { background: hsl(var(--primary) / 0.88); }
+
+/* Recent Visits */
+.recent-section { margin-bottom: 28px; }
+
+.recent-card {
+  background: hsl(var(--card));
+  border-radius: 14px;
+  border: 1px solid hsl(var(--border));
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  overflow: hidden;
+  overflow-x: auto;
+}
+
+.visit-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 380px;
+}
+
+.visit-table th {
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  padding: 12px 16px;
+  text-align: start;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.visit-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid hsl(var(--border));
+  font-size: 14px;
+  color: hsl(var(--foreground));
+}
+
+.visit-table tbody tr:hover       { background: hsl(var(--muted) / 0.3); }
+.visit-table tbody tr:last-child td { border-bottom: none; }
+
+/* ===== Tablet (≤1024px) ===== */
+@media (max-width: 1024px) { .vital-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 768px) {
+  .vital-grid   { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .section-title { font-size: 15px; }
+}
+@media (max-width: 480px) {
+  .vital-card h4 { font-size: 15px; }
+  .vital-top .icon { font-size: 17px; }
+  .vital-top p { font-size: 11px; }
+  .primary-btn { width: 100%; text-align: center; }
+}

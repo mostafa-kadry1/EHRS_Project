@@ -1,0 +1,205 @@
+.prescription-card {
+  padding: 0;
+}
+
+.page-title { 
+  font-size: 28px; 
+  font-weight: 800; 
+  margin: 0 0 24px; 
+  color: hsl(var(--foreground));
+  letter-spacing: -0.5px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.title-line { display: none; }
+
+/* Tabs */
+.tabs { display: flex; gap: 32px; margin-bottom: 24px; }
+
+.tabs span {
+  font-size: 15px; 
+  font-weight: 700; 
+  color: hsl(var(--muted-foreground));
+  cursor: pointer; 
+  padding-bottom: 10px;
+  border-bottom: 2px solid transparent; 
+  transition: all 0.2s ease;
+}
+.tabs span.active { 
+  color: hsl(var(--primary)); 
+  border-bottom-color: hsl(var(--primary)); 
+}
+
+.empty-msg { 
+  color: hsl(var(--muted-foreground)); 
+  font-size: 14px; 
+  text-align: center; 
+  margin-top: 48px;
+  background: hsl(var(--card));
+  padding: 32px;
+  border-radius: 16px;
+  border: 1px dashed hsl(var(--border));
+}
+
+/* Wrapper */
+.prescription-wrapper {
+  background: hsl(var(--card));
+  border-radius: 20px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+  overflow: hidden;
+  border: 1px solid hsl(var(--border));
+}
+
+/* Header */
+.prescription-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 20px 24px;
+  background: hsl(var(--muted) / 0.1);
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.doctor-info-rx { display: flex; align-items: center; gap: 14px; }
+.doctor-info-rx img { 
+  width: 48px; 
+  height: 48px; 
+  border-radius: 50%; 
+  object-fit: cover; 
+  border: 2px solid hsl(var(--card));
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.doctor-info-rx h4  { margin: 0; font-size: 16px; font-weight: 700; color: hsl(var(--foreground)); }
+.doctor-info-rx p   { margin: 2px 0 0; font-size: 13px; color: hsl(var(--muted-foreground)); }
+
+.date { 
+  font-size: 13px; 
+  color: hsl(var(--muted-foreground)); 
+  font-weight: 600; 
+  background: hsl(var(--background));
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid hsl(var(--border));
+}
+
+/* Box layout */
+.prescription-box {
+  display: flex;
+  gap: 32px;
+  padding: 24px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+/* Left PDF */
+.left-box {
+  width: 240px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.upload-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 180px;
+  border: 2px dashed hsl(var(--primary) / 0.3);
+  border-radius: 16px;
+  color: hsl(var(--primary));
+  font-weight: 700;
+  font-size: 14px;
+  background: hsl(var(--primary) / 0.05);
+  padding: 24px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.disabled-box {
+  background: hsl(var(--muted) / 0.2);
+  border-color: hsl(var(--border));
+  color: hsl(var(--muted-foreground));
+  cursor: default;
+}
+
+.pdf-viewer {
+  width: 100%;
+  height: 200px;
+  border-radius: 12px;
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--background));
+}
+
+.download-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 24px;
+  background: hsl(var(--primary));
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  transition: all 0.2s;
+  width: 100%;
+}
+.download-btn:hover { background: hsl(var(--primary) / 0.9); }
+
+/* Right Fields */
+.right-box { 
+  flex: 1; 
+  min-width: 300px; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 16px; 
+}
+
+.input-group { display: flex; flex-direction: column; gap: 6px; }
+
+.input-group label { 
+  font-size: 12px; 
+  font-weight: 700; 
+  color: hsl(var(--muted-foreground)); 
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.input-group input {
+  padding: 12px 16px;
+  border: 1px solid hsl(var(--border));
+  border-radius: 12px;
+  font-size: 15px;
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  outline: none;
+  transition: all 0.2s;
+  width: 100%;
+}
+.input-group input[readonly] {
+  background: hsl(var(--muted) / 0.1);
+  border-color: transparent;
+  color: hsl(var(--foreground));
+}
+
+/* ===== Tablet (≤768px) ===== */
+@media (max-width: 768px) {
+  .prescription-box    { flex-direction: column; }
+  .left-box            { width: 100%; }
+  .right-box           { min-width: 0; width: 100%; }
+}
+
+/* ===== Mobile (≤480px) ===== */
+@media (max-width: 480px) {
+  .prescription-header { padding: 16px 20px; }
+  .prescription-box    { padding: 20px; }
+}

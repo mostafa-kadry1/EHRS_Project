@@ -1,0 +1,93 @@
+/* ===== App Layout ===== */
+.app-layout {
+  display: flex;
+  background: hsl(var(--background));
+  min-height: 100vh;
+  position: relative;
+}
+
+.main-content {
+  flex: 1;
+  min-height: 100vh;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* ===== Global Topbar ===== */
+.global-topbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 24px;
+  height: 64px;
+  background: hsl(var(--card));
+  border-bottom: 1px solid hsl(var(--border));
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  position: sticky;
+  top: 0;
+  z-index: 900;
+  gap: 12px;
+}
+
+.hamburger-btn-inline {
+  display: none;
+  background: hsl(var(--primary));
+  color: white;
+  border: none;
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  cursor: pointer;
+  margin-right: auto;
+}
+[dir="rtl"] .hamburger-btn-inline { margin-right: 0; margin-left: auto; }
+
+.topbar-right { display: flex; align-items: center; gap: 8px; }
+
+/* Language toggle is now unified in the layout component */
+
+/* Page content padding */
+.main-content > *:not(.global-topbar) {
+  padding: 32px;
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* ===== Mobile Overlay ===== */
+.mobile-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+  z-index: 1050;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ===== Tablet (≤1024px) ===== */
+@media (max-width: 1024px) {
+  .main-content > *:not(.global-topbar) { padding: 24px; }
+}
+
+/* ===== Mobile (≤768px) ===== */
+@media (max-width: 768px) {
+  .hamburger-btn-inline { display: flex; }
+  .main-content > *:not(.global-topbar) { padding: 20px; }
+  .global-topbar { padding: 0 16px; height: 56px; }
+}
+
+/* ===== Small Mobile (≤380px) ===== */
+@media (max-width: 380px) {
+  .main-content > *:not(.global-topbar) { padding: 16px; }
+}

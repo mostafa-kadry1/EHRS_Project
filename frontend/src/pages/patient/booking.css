@@ -1,0 +1,173 @@
+/* ════════════════════════════════════════════
+   Booking Page — unified field design
+   Works identically in LTR and RTL
+   ════════════════════════════════════════════ */
+
+.booking-container { padding: 0; }
+
+.booking-subtitle {
+  color: hsl(var(--muted-foreground));
+  font-size: 14px;
+  margin: 0 0 28px;
+  line-height: 1.6;
+}
+
+/* ── Card ── */
+.booking-card {
+  background: hsl(var(--card));
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  border: 1px solid hsl(var(--border));
+  max-width: 560px;
+  width: 100%;
+}
+
+/* ── Field label ── */
+.field-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: hsl(var(--muted-foreground));
+  margin-bottom: 6px;
+  margin-top: 20px;
+}
+.field-label:first-of-type { margin-top: 0; }
+.field-label-icon { color: hsl(var(--primary)); flex-shrink: 0; }
+
+/* ── Field wrapper — same height for every field ── */
+.field-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 48px;                            /* ← single source of truth for height */
+  border: 1.5px solid hsl(var(--border));
+  border-radius: 10px;
+  background: hsl(var(--background));
+  transition: border-color 0.2s, box-shadow 0.2s;
+  overflow: hidden;
+}
+
+.field-wrap:focus-within {
+  border-color: hsl(var(--primary));
+  box-shadow: 0 0 0 3px hsl(var(--primary) / 0.12);
+  background: hsl(var(--card));
+}
+
+/* ── Native <select> inside wrapper ── */
+.field-select {
+  flex: 1;
+  height: 100%;
+  padding: 0 14px;
+  border: none;
+  background: transparent;
+  color: hsl(var(--foreground));
+  font-size: 14px;
+  outline: none;
+  cursor: pointer;
+  /* Custom chevron — works in both LTR and RTL */
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 38px;               /* space for arrow LTR */
+}
+
+[dir="rtl"] .field-select {
+  background-position: left 12px center;
+  padding-right: 14px;
+  padding-left: 38px;               /* space for arrow RTL */
+  text-align: right;
+}
+
+.field-select:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* ── DateInput inside wrapper ── */
+.date-input-field {
+  flex: 1;
+  height: 100%;
+}
+/* Strip DateInput's own border/shadow since the wrapper handles it */
+.date-input-field > input {
+  height: 100% !important;
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  padding: 0 14px !important;
+  font-size: 14px !important;
+}
+/* Calendar icon inside DateInput */
+.date-input-field > button {
+  position: absolute;
+}
+[dir="ltr"] .date-input-field > button { right: 12px; }
+[dir="rtl"] .date-input-field > button { left: 12px; right: auto; }
+
+/* ── Aux elements ── */
+.field-spinner {
+  flex-shrink: 0;
+  margin-right: 10px;
+  color: hsl(var(--primary));
+  animation: spin 0.8s linear infinite;
+}
+[dir="rtl"] .field-spinner { margin-right: 0; margin-left: 10px; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.field-retry {
+  flex-shrink: 0;
+  font-size: 12px;
+  color: hsl(var(--destructive));
+  text-decoration: underline;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 10px;
+}
+
+.field-no-results {
+  flex-shrink: 0;
+  font-size: 12px;
+  color: hsl(var(--muted-foreground));
+  padding: 0 10px;
+  white-space: nowrap;
+}
+
+/* ── Submit button ── */
+.book-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 50px;
+  margin-top: 28px;
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  box-shadow: 0 4px 14px hsl(var(--primary) / 0.35);
+}
+.book-btn:hover:not(:disabled) {
+  background: hsl(var(--primary) / 0.88);
+  transform: translateY(-1px);
+}
+.book-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .booking-card { padding: 24px; max-width: 100%; }
+}
+@media (max-width: 480px) {
+  .booking-card { padding: 18px; border-radius: 12px; }
+  .field-wrap   { height: 46px; }
+  .book-btn     { height: 46px; font-size: 14px; }
+}
