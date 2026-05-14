@@ -1,0 +1,118 @@
+pipeline {
+    agent any
+
+    environment {
+        // AWS Variables
+        AWS_REGION = 'eu-north-1' 
+        AWS_ACCOUNT_ID = '665063747160' 
+        ECR_REGISTRY = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
+        
+        // Repository Names 
+        REPO_BACKEND = 'health-monitoring-backend' 
+        REPO_FRONTEND = 'health-monitoring-frontend' 
+        
+        // Generates a unique tag for both images (e.g., v15)
+        IMAGE_TAG = "v${env.BUILD_NUMBER}"
+    }
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                // Pulls the code directly from your GitHub repository
+                git branch: 'main', url: 'https://github.com/nasser-tarek/Depi_project.git'
+            }
+        }
+
+        stage('Build Docker Images') {
+            steps {
+                script {
+                    // 1. Enter the backend folder and build
+                    dir('./backend') {
+                        echo "Building Backend Image..."
+                        sh "docker build -t ${ECR_REGISTRY}/${REPO_BACKEND}:${IMAGE_TAG} ."
+                    }
+                    
+                    // 2. Enter the frontend folder and build
+                    dir('./frontend') {
+                        echo "Building Frontend Image..."
+                        sh "docker build -t ${ECR_REGISTRY}/${REPO_FRONTEND}:${IMAGE_TAG} ."
+                    }
+                }
+            }
+        }
+
+        stage('Push to AWS ECR') {
+            steps {
+                // Inject AWS credentials from Jenkins
+                withCredentials([[
+                    $class: 'AmazonWebServicesCredentialsBinding', 
+                    credentialsId: 'aws-ecr-creds', 
+                    accessKeyVariable: 'AWS_ACCESS_KEY_ID', 
+                    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+                ]]) {
+                    script {
+                        // Authenticate with AWS ECR once
+                        echo "Logging into AWS ECR..."
+                        sh """
+                            aws ecr get-login-password --region ${AWS_REGION} | \
+                            docker login --username AWS --password-stdin ${ECR_REGISTRY}
+                        """
+
+                        // Push the Backend Image
+                        echo "Pushing Backend Image to ECR..."
+                        sh "docker push ${ECR_REGISTRY}/${REPO_BACKEND}:${IMAGE_TAG}"
+
+                        // Push the Frontend Image
+                        echo "Pushing Frontend Image to ECR..."
+                        sh "docker push ${ECR_REGISTRY}/${REPO_FRONTEND}:${IMAGE_TAG}"
+                    }
+                }
+            }
+        }
+        stage('Update Manifests & Push to Git (Argo CD Trigger)') {
+            steps {
+                script {
+                    echo "Updating Kubernetes manifests with new ECR images..."
+                    
+                    //  Configure Jenkins Git Identity
+                    sh "git config user.email 'jenkins@your-server.local'"
+                    sh "git config user.name 'Jenkins CI'"
+                    
+
+                    // This finds old image name and replaces it with the ECR image + new tag
+                    sh "sed -i 's|image: ${ECR_REGISTRY}/${REPO_BACKEND}:.*|image: ${ECR_REGISTRY}/${REPO_BACKEND}:${IMAGE_TAG}|g' ./K3s/backend-deployment.yaml"
+                    sh "sed -i 's|image: ${ECR_REGISTRY}/${REPO_FRONTEND}:.*|image: ${ECR_REGISTRY}/${REPO_FRONTEND}:${IMAGE_TAG}|g' ./K3s/frontend-deployment.yaml"
+                    
+                    //  Commit and Push back to GitHub
+                    withCredentials([usernamePassword(credentialsId: 'github-credentials', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
+                        sh """
+                            git add ./K3s/*
+                            # Using [skip ci] prevents Jenkins from triggering another build from this push
+                            git commit -m "Update images to ${IMAGE_TAG} [skip ci]"
+                            
+                            # Authenticate and push to GitHub
+                            git remote set-url origin https://${GIT_USER}:${GIT_PASS}@github.com/nasser-tarek/Depi_project.git
+                            git push origin HEAD:main
+                        """
+                    }
+                }
+            }
+        }
+        stage('Cleanup (Free up EC2 Space)') {
+            steps {
+                script {
+                    echo "Cleaning up local EC2 disk..."
+                    
+                    // 1. Remove the specific images we just built to free up immediate space
+                    // The "|| true" ensures the pipeline doesn't fail if the image is already gone
+                    sh "docker rmi ${ECR_REGISTRY}/${REPO_BACKEND}:${IMAGE_TAG} || true"
+                    sh "docker rmi ${ECR_REGISTRY}/${REPO_FRONTEND}:${IMAGE_TAG} || true"
+                    
+                    // 2. Prune dangling build cache and unused layers 
+                    sh "docker builder prune -f"
+                    sh "docker image prune -f"
+                }
+            }
+        }
+    }
+}

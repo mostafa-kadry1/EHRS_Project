@@ -1,0 +1,52 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: ecr-registry-helper
+  namespace: depi
+
+spec:
+  schedule: "0 */8 * * *"  # every 8 hours
+
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: default
+
+          containers:
+            - name: ecr-token-helper
+              image: odaniait/aws-kubectl:latest
+
+              env:
+                - name: AWS_ACCESS_KEY_ID
+                  valueFrom:
+                    secretKeyRef:
+                      name: aws-secret
+                      key: AWS_ACCESS_KEY_ID
+
+                - name: AWS_SECRET_ACCESS_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: aws-secret
+                      key: AWS_SECRET_ACCESS_KEY
+
+                - name: AWS_DEFAULT_REGION
+                  value: "eu-north-1"
+
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  set -e
+
+                  TOKEN=$(aws ecr get-login-password --region ${AWS_DEFAULT_REGION})
+
+                  kubectl delete secret --ignore-not-found ecr-secret -n depi
+
+                  kubectl create secret docker-registry ecr-secret \
+                    --docker-server=665063747160.dkr.ecr.eu-north-1.amazonaws.com \
+                    --docker-username=AWS \
+                    --docker-password="${TOKEN}" \
+                    -n depi
+
+          restartPolicy: OnFailure
