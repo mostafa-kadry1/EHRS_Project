@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EHRS.Core")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+06ad5ddba080f86f77513c64c47c513ce51e4bd3")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ceac7f933f4ab7ebf7546eaefbafc7310cc4864d")]
 [assembly: System.Reflection.AssemblyProductAttribute("EHRS.Core")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EHRS.Core")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

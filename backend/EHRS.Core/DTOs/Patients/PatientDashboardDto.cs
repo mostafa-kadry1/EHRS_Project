@@ -5,6 +5,9 @@ public sealed class PatientDashboardDto
     public int PatientId { get; set; }
     public string FullName { get; set; } = string.Empty;
 
+    /// <summary>Absolute URL of the patient's profile picture, or null if none.</summary>
+    public string? ProfilePicture { get; set; }
+
     public short? HeightCm { get; set; }
     public decimal? WeightKg { get; set; }
     public string? BloodType { get; set; }

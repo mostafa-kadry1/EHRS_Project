@@ -69,6 +69,7 @@ public sealed class PatientDashboardQueries : IPatientDashboardQueries
         {
             PatientId = patient.PatientId,
             FullName = patient.FullName,
+            ProfilePicture = patient.ProfilePicture,   // relative path — controller converts to absolute URL
 
             HeightCm = patient.HeightCm,
             WeightKg = patient.WeightKg,

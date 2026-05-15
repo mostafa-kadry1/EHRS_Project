@@ -22,6 +22,13 @@ public sealed class PatientBookingController : ControllerBase
         _t = t;
     }
 
+    /// <summary>Converts a relative wwwroot path to an absolute URL.</summary>
+    private string AbsoluteUrl(string relativePath)
+    {
+        var req = HttpContext.Request;
+        return $"{req.Scheme}://{req.Host}{(relativePath.StartsWith("/") ? relativePath : "/" + relativePath)}";
+    }
+
     // GET: /api/PatientBooking/areas
     [HttpGet("areas")]
     public async Task<ActionResult<IReadOnlyList<string>>> GetAreas(CancellationToken ct)
@@ -57,6 +64,14 @@ public sealed class PatientBookingController : ControllerBase
             return BadRequest(new { message = _t["Booking_SpecialtyRequired"] });
 
         var result = await _queries.GetDoctorsAsync(area, specialty, ct);
+
+        // Convert relative profile picture paths to absolute URLs
+        foreach (var doctor in result)
+        {
+            if (!string.IsNullOrWhiteSpace(doctor.ProfilePicture) && !doctor.ProfilePicture.StartsWith("http"))
+                doctor.ProfilePicture = AbsoluteUrl(doctor.ProfilePicture);
+        }
+
         return Ok(result);
     }
 

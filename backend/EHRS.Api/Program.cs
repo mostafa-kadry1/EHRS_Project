@@ -26,7 +26,7 @@ namespace EHRS.Api
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -229,10 +229,13 @@ namespace EHRS.Api
                 {
                     var db = scope.ServiceProvider.GetRequiredService<EHRSContext>();
                     db.Database.Migrate();
+
+                    // Seed doctors for all governorates x specialties (idempotent -- safe every startup)
+                    await EHRS.Infrastructure.Persistence.DoctorSeeder.SeedAsync(db);
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Migration warning: {ex.Message}");
+                    Console.WriteLine($"Startup warning: {ex.Message}");
                 }
             }
             // ================= Middleware =================
